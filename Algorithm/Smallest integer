@@ -1,0 +1,42 @@
+#include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <iterator>
+
+int main() {
+	int m;
+	std::vector<int> S;
+	std::string line;
+
+	std::cin >> m;
+	std::cin.ignore();
+	std::vector<int> small(m);
+	small.clear();
+	std::getline(std::cin, line);
+	std::stringstream sstream(line);
+	std::copy(std::istream_iterator<int>(sstream), std::istream_iterator<int>(), std::back_inserter(S));
+
+	int temp;
+	for (int i = 0; i < S.size(); i++) {
+		small.insert(small.begin(), S[i]);
+			for (int j = 0; j < small.size()-1; j++) {
+				if (small[j + 1] < small[j]) {
+					temp = small[j];
+					small[j] = small[j + 1];
+					small[j + 1] = temp;
+				}
+			}
+	}
+
+	std::vector<int>::iterator it;
+	for (it = small.begin(); it != small.end(); it++) {
+		if (*it == 1)
+			std::cout << "[" << small[0] << ", ";
+		else if (*it == m - 1)
+			std::cout << small[0] << "]";
+		else
+			std::cout << *it << ", ";
+	}
+	return 0;
+}
